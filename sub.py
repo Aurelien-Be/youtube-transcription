@@ -1,17 +1,21 @@
 from pytube import YouTube
+import re
 import os
 
+ytlink = input("Youtube Link:")
+yt = YouTube(ytlink)
 
-yt = YouTube('https://www.youtube.com/watch?v=YGHXjZlHVoI')
 
 caption = yt.captions.get_by_language_code('ru')
-subs = caption.generate_srt_captions()
-
-
-file = open("subs.odf", "w")
-file.write(repr(subs))
-file.close()
+justTextCaption = re.sub("[<].*?[>]", " ", caption.generate_srt_captions())
 
 
 
-print(subs)
+print(justTextCaption)
+
+
+path = R'C:\Users\Asus\Documents\Transcriptions'
+file = input('name of the file:')
+with open(os.path.join(path, file), 'w') as text_file:
+    text_file.write(justTextCaption)
+
